@@ -1,0 +1,55 @@
+# 7stats
+| arXiv | Zenodo DOI |
+|
+
+`7stats` is a tool which allows for the calculation of the p value for standard and new physics scenarios for the CEvNS process.
+As an explicit example we demonstrate the calculation of the p values with a Monte Carlo simulation 
+for neutrino non-standard interactions with a heavy mediator using the COHERENT CsI data.
+
+## Usage
+The code is written in python3, numpy and scipy are needed for the calculations.
+
+The data files for the COHERENT CsI data are included as well. If you use this data please cite 
+`Science 357 (2017) no.6356, 1123-1126,[arXiv:1708.01294 [nucl-ex]] `
+and `arXiv:1804.09459 [nucl-ex]`.
+
+
+## Example code
+
+### Auxillary code
+There are three code files which contain auxillary functions needed to calculate the number of CEvNS signal events at COHERENT CsI. 
+
+`cevns.py` contains the functions specific to the CEvNS process like the cross section for heavy NSI mediators.
+
+`cevns_accelerators.py` contains the funtions which are specific to CEvNS from SNS neutrinos like the energy structure of the different neutrino flavors coming 
+from the SNS beam, the function used for photoelectron smearing, the CsI detector efficiency and functions needed for the backgrouond treatment.
+
+`coherent_CsI_real.py` contains the functions which calculate the signal at COHERENT Csi, apply the dector efficiency, rebin the data to the desired number of bins. 
+
+
+
+### 	Scan code
+The files `scan_nsi_csir_eeonly_2t1e_nomarg_ee.py`, `scan_nsi_csir_eeonly_2t1e_marg_ee.py`, `scan_lmad_2t1e.py`
+demonstrates the calculation of the test statistic using two timing bins, scanning over one NSI parameter (or two in the case of LMA Dark) and marginalizing over the pull terms 
+and the remaining NSI parameters (in the case of `scan_nsi_csir_eeonly_2t1e_marg_ee.py`). 
+
+### Monte Carlo simulation
+The files `analysis_code_pval_nsi_eeonly_2t1e_nomarg.py`, `analysis_code_pval_nsi_eeonly_2t1e_marg.py`, `analysis_code_pval_nsi_lmad_2t1e.py` demonstrate the Monte Carlo
+simulation which is used to calculate the p value. 
+
+`analysis_code_pval.py` contains the function to calculate the p value. It uses the output data file from the scan code as well as the one from the MC simulation. 
+We include in datafile_out the output of the MC simulation for eps_ee as well as the output of the scan code for this case.
+
+
+## Results 
+For convience we include the datafiles containing the results of the MC simulation for the p values of various NSI models (only one non-zero NSI parameter, allowing 
+for all NSI parameters to be non-zero simultanously and only non-zero eps_ee^u and eps_mm^u) using two timing bins. These files can be found in the datafiles_pval folder and they are named
+according to results_'NSI parameter'_'number of bins'_'marg or not'_nosmear_gauss006.txt
+The first column is the value of the NSI parameter, the second column is the p value.
+
+## Bugs and Features
+If any bugs are identified or any features suggested, please use the tools (issues, pull requests, etc.) on github.
+
+## Reference
+If you use this code please reference ...
+
