@@ -16,14 +16,16 @@ n=acc.load_neutron(neut)
 ACon=np.loadtxt("datafiles_in/full_AC_on.dat")
 ACoff=np.loadtxt("datafiles_in/full_AC_off.dat")
 COoff=np.loadtxt("datafiles_in/full_CO_off.dat")
+#produce 2D background file
 bkg1dsdata=acc.bkgreal_2ds(ACoff,ACon,COoff)
 
-#print(csir.chi2_1d(n,bkg1dsdata,dat,0,0,0,0,0,0,0,0))
 
+#calculate TS for 2 timing and 1 energy bin
 def chi2_2t1e(n,ac,meas,epseu,epsmu,alpha,beta,gamma):
     chi=0
     sig=csir.signalcomp_lmad(epseu,epsmu)
     sig_n=csir.add_lists_2(sig,n,alpha,beta)
+    #uncomment the next two lines if smearing is required
 #    pred=acc.data_eff(sig_n)                                                                                                                                                                             
 #    smeared=acc.smearing_fct(sig_n)                                                                                                                                                                      
     pred=acc.data_eff(sig_n)
@@ -32,7 +34,7 @@ def chi2_2t1e(n,ac,meas,epseu,epsmu,alpha,beta,gamma):
     lista=csir.add_lists_1(pred,ac,gamma)
     obss=csir.switch_te(meas)
 
-    #rebin                                                                                                                                                                                                
+    #rebin from 144 bins to 2 bins                                                                                                                                                                                               
     preddev=csir.rebin_list_1E2t(lista)
     obssev=csir.rebin_list_1E2t(obss)
 
@@ -51,13 +53,10 @@ def mini_2t1e(epseu,epsmu,n,meas,bkgdata):
     minres= minimize(lambda x: chi2_2t1e( n,bkgdata,meas,epseu,epsmu,x[0],x[1],x[2]),(0.0,0.0,0.0),method='SLSQP',tol=1e-5,options={"maxiter":1e3})
     return minres
 
-#print( minimize(lambda x: chi2_2t1e( n,bkg1dsdata,dat,x[0],x[1],x[2],x[3],x[4]),(0.0,0.0,0.0,0.0,0.0),method='SLSQP',tol=1e-5,options={"maxiter":1e3}))
+
 
 results=np.zeros((len(np.arange(-1,1.05,0.05))*len(np.arange(-1,1.25,0.05)),6))                       
 kk=0  
-
-#print("hhaa",mini_2t1e(0,0,n,dat,bkg1dsdata))
-#print("m",csir.mini_bins(0,n,dat,bkg1dsdata))
 
 for epseu in np.arange(-1,1.05,0.05):
    for epsmu in np.arange(1,1.25,0.05):
@@ -71,7 +70,5 @@ for epseu in np.arange(-1,1.05,0.05):
       results[kk,5]=res.x[2]
       
       kk=kk+1
-#      print(" I'm at ee ",epsee)
-#      print("with chi^2 ", res.fun)
-  #    print("ch",res)
-      np.savetxt("datafiles_out/chi2_lmad_2t1e_nomarg_nosmear_gauss006_finer_1.txt",results)
+
+      np.savetxt("datafiles_out/chi2_lmad_2t1e_nomarg_nosmear_gauss006.txt",results)
