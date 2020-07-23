@@ -1,3 +1,4 @@
+#MC simulation assuming all NSI parameters to be non-zero simultaneously
 import numpy as np
 import matplotlib.pyplot  as plt
 from scipy.integrate import quad
@@ -60,7 +61,7 @@ def randompred(sig,n,bkg):
         lista=csir.add_lists_1(pred,bkg,0)
         return lista
 
-#apply Poisson fluctuations to the total number of observed events
+#apply Poisson fluctuations to the total number of observed events in each bin
 def randomdata(lista):
         arrout = np.zeros((2, 3))
         bins=csir.rebin_list_1E2t(lista)
@@ -94,6 +95,7 @@ def chi2_bins(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
 
                 chi += add
         return 2*chi+(alpha/0.28)**2+(beta/0.25)**2+(gamma/0.06)**2
+    #uncomment the next line if new pull term parametrization is used
 #        return 2*chi+ 2*(alpha - np.log(alpha + 1.))/0.28**2+2*(beta - np.log(beta + 1.))/0.25**2+2*(gamma - np.log(gamma + 1.))/0.06**2
 
 def mini_bins(epsee,n,meas,bkgdata):
@@ -109,6 +111,5 @@ for i in range(nn):
         if pp<10:
                 res=mini_bins(epsee,n,outt,bkg1dsdata)
                 fileout[i,0]=res.fun
-#                print("min",res.fun)
                 np.savetxt("datafiles_out/data_gauss/result_pval_nsi_eeonly_2t1e_marg_nosmear_gauss006_1.txt",fileout)
-#print(fileout)
+
