@@ -4,7 +4,7 @@
 # 7stats 
 | arXiv | Zenodo DOI |
 
-h
+
 
 ## Introduction
 
@@ -45,8 +45,7 @@ The files `analysis_code_pval_nsi_eeonly_2t1e_nomarg.py`, `analysis_code_pval_ns
 simulation which is used to calculate the p value. 
 
 `analysis_code_pval.py` contains the function to calculate the p value. It uses the output data file from the scan code as well as the one from the MC simulation. 
-We include in `datafile_out` the output of the MC simulation for several NSI scenarios as well as the output of the scan code for theses cases.
-
+We include in `datafile_out` the output of the MC simulation for several NSI scenarios as well as the output of the scan code for these cases.
 
 ## Results 
 For convience we include the datafiles containing the results of the MC simulation for the p values of various NSI models (only one non-zero NSI parameter, allowing 
