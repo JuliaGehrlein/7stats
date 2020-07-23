@@ -32,7 +32,8 @@ from the SNS beam, the function used for photoelectron smearing, the CsI detecto
 
 `coherent_CsI_real.py` contains the functions which calculate the signal at COHERENT Csi, apply the dector efficiency, rebin the data to the desired number of bins. 
 
-
+`cevns_statistics.py` is only needed if one wishes to use the new pull term parametrization. In this case the chi2 function and the functions for the MC calculation
+need to be changed.
 
 ### 	Scan code
 The files `scan_nsi_csir_eeonly_2t1e_nomarg_ee.py`, `scan_nsi_csir_eeonly_2t1e_marg_ee.py`, `scan_lmad_2t1e.py`
@@ -44,13 +45,13 @@ The files `analysis_code_pval_nsi_eeonly_2t1e_nomarg.py`, `analysis_code_pval_ns
 simulation which is used to calculate the p value. 
 
 `analysis_code_pval.py` contains the function to calculate the p value. It uses the output data file from the scan code as well as the one from the MC simulation. 
-We include in datafile_out the output of the MC simulation for eps_ee as well as the output of the scan code for this case.
+We include in `datafile_out` the output of the MC simulation for several NSI scenarios as well as the output of the scan code for theses cases.
 
 
 ## Results 
 For convience we include the datafiles containing the results of the MC simulation for the p values of various NSI models (only one non-zero NSI parameter, allowing 
-for all NSI parameters to be non-zero simultanously and only non-zero eps_ee^u and eps_mm^u) using two timing bins. These files can be found in the datafiles_pval folder and they are named
-according to results_'NSI parameter'_'number of bins'_'marg or not'_nosmear_gauss006.txt
+for all NSI parameters to be non-zero simultanously and only non-zero eps_ee^u and eps_mm^u) using two timing bins. These files can be found in the 
+`datafiles_pval` folder 
 The first column is the value of the NSI parameter, the second column is the p value.
 
 ## Bugs and Features
