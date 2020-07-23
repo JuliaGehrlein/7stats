@@ -25,7 +25,7 @@ def mini_2t1e(epsee,n,meas,bkgdata):
 
 results=np.zeros((len(np.arange(-1,1.02,0.02)),9))                       
 kk=0  
-#loop over eps_ee and write to fule
+#loop over eps_ee and write to file
 for epsee in np.arange(-1,1.02,0.02):
       res=mini_2t1e(epsee,n,dat,bkg1dsdata)
 
@@ -39,7 +39,6 @@ for epsee in np.arange(-1,1.02,0.02):
       results[kk,7]=res.x[5]
       results[kk,8]=res.x[6]
       kk=kk+1
-#      print(" I'm at ee ",epsee)
-#      print("with chi^2 ", res.fun)
-      print("ch",res)
-  #    np.savetxt("datafiles_out/data_gauss/chi2_eeonly_2t1e_marg_nosmear_gauss006.txt",results)
+
+     
+      np.savetxt("datafiles_out/chi2_eeonly_2t1e_marg_nosmear_gauss006.txt",results)
