@@ -1,5 +1,6 @@
-
-
+<img src="logo.png" alt="logo"
+	title="7stats logo" width="350" height="250" />
+  
 # 7stats 
 | arXiv | Zenodo DOI |
 
