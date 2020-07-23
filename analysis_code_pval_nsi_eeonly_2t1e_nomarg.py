@@ -1,3 +1,4 @@
+#MC simulation assuming only non-zero eps_ee
 import numpy as np
 import matplotlib.pyplot  as plt
 from scipy.integrate import quad
@@ -25,22 +26,15 @@ time=308.1
 f_Cs=(A_Cs)/(A_Cs+A_I)
 f_I=(A_I)/(A_Cs+A_I)
 
-#best fit
-#newpull
-#epsee=    9.55537625e-02
-#epsmm=   9.55585157e-02
-#epsem=   1.03766392e-06
-#epset=-8.85199127e-07
-#epsmt=  -5.17492414e-08
-#gauss
+#best fit value
 epsee=     9.64103626e-02
 epsmm=  0.0
 epsem=   0.0
 epset=0.0
 epsmt=  0.0
 
+#calculate the signal with the best fit NSI value
 sig=csir.signalcomp(epsee,epsmm,epsem,epset,epsmt)
-#chi2=147.7320555091213
 #load data
 dat=acc.load_file("datafiles_in/Co_data.dat")
 #load neutrons
@@ -51,22 +45,21 @@ ACon=np.loadtxt("datafiles_in/full_AC_on.dat")
 ACoff=np.loadtxt("datafiles_in/full_AC_off.dat")
 COoff=np.loadtxt("datafiles_in/full_CO_off.dat")
 bkg1dsdata=acc.bkgreal_2ds(ACoff,ACon,COoff)
-#print( minimize(lambda x: csir.chi2_1d( n,bkg1dsdata,dat,x[0],x[1],x[2],x[3]),(0.0,0.0,0.0,0.0),method='SLSQP',tol=1e-5,options={"maxiter":1e3}))
-#print(csir.chi2_bins(n,bkg1dsdata,dat,epsee,  epsmm,epsem,epset,epsmt,0,0,0))
+
 
 def randompred(sig,n,bkg):
-    #    alpha=stat.pulldist(0.28)
+    #    alpha=stat.pulldist(0.28)#uncomment if new pull term parametrization is used
      #   beta=stat.pulldist(0.25)
-        alpha=np.random.normal(0, 0.28)
+        alpha=np.random.normal(0, 0.28)#Gaussian pull terms
         beta=np.random.normal(0, 0.25)
         sig_n=csir.add_lists_2(sig,n,alpha,beta)
-#        smeared=acc.smearing_fct(sig_n)
+#        smeared=acc.smearing_fct(sig_n)#uncomment if smearing is required
         pred=acc.data_eff(sig_n)
         #add bkg                          
         lista=csir.add_lists_1(pred,bkg,0)
         return lista
 
-
+#apply Poisson fluctions to the predicted number of events in each bin
 def randomdata(lista):
         arrout = np.zeros((2, 3))
         bins=csir.rebin_list_1E2t(lista)
@@ -101,14 +94,14 @@ def chi2_bins(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
 
                 chi += add
         return 2*chi+(alpha/0.28)**2+(beta/0.25)**2+(gamma/0.06)**2
+       #uncomment the next line if the new pull term parametrization is used
 #        return 2*chi+ 2*(alpha - np.log(alpha + 1.))/0.28**2+2*(beta - np.log(beta + 1.))/0.25**2+2*(gamma - np.log(gamma + 1.))/0.0698**2
 
 def mini_bins(epsee,n,meas,bkgdata):
     minres= minimize(lambda x: chi2_bins( n,bkgdata,meas,epsee,0.0,0.0,0.0,0.0,x[0],x[1],x[2]),(0.0,0.0,0.0),method='SLSQP',tol=1e-5,options={"maxiter":1e3})
     return minres
 
-print( minimize(lambda x: csir.chi2_bins( n,bkg1dsdata,dat,x[0],0.0,0.0,0.0,0.0,x[1],x[2],x[3]),(0.0,0.0,0.0,0.0),method='SLSQP',tol=1e-5,options={"maxiter":1e3}))
-#print(csir.chi2_bins( n,bkg1dsdata,dat,epsee,epsmm,epsem,epset,epsmt,0,0,0))
+
 
 #number of tests
 nn=2000
@@ -118,7 +111,6 @@ for i in range(nn):
         pp,outt=randomdata(random)
         if pp<10:
                 res=mini_bins(epsee,n,outt,bkg1dsdata)
-                fileout[i,0]=res.fun
-                print("min",res.fun)
-#                np.savetxt("datafiles_out/data_gauss/result_pval_nsi_eeonly_2t1e_nomarg_nosmear_gauss006_4.txt",fileout)
+                fileout[i,0]=res.fun              
+                np.savetxt("datafiles_out/result_pval_nsi_eeonly_2t1e_nomarg_nosmear_gauss006.txt",fileout)
 
