@@ -1,10 +1,15 @@
 <img src="logo.png" alt="logo"
 	title="7stats logo" width="350" height="250" />
 
+# 7stats 
+| arXiv | Zenodo DOI |
+
+
+
 ## Introduction
 
-`7stats` is a tool which allows for the calculation of the p value for standard and new physics scenarios for the CEvNS process.
-As an explicit example we demonstrate the calculation of the p values with a Monte Carlo simulation 
+`7stats` is a tool which allows for the p value  calculation of standard and new physics scenarios in the CEvNS process.
+As an explicit example we demonstrate the p value calculation with a Monte Carlo simulation 
 for neutrino non-standard interactions with a heavy mediator using the COHERENT CsI data.
 
 ## Usage
