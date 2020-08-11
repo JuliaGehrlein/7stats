@@ -5,7 +5,7 @@ import coherent_CsI_real as csir
 from scipy.integrate import quad,dblquad
 import scipy.stats
 
-#form factor (Klein Nystrand), take eq. 2.5 from http://inspirehep.net/record/1664530/files/Scholz_uchicago_0330D_14161.pdf
+#form factor (Klein Nystrand), take eq. 2.5 from http://inspirehep.net/record/1664530/files/Scholz_uchicago_0330D_14161.pdf (arxiv: 1904.01155)    
 def formfac(Er,A,Z,bindingE):
     a=0.7 #in fm
     Ra=A**(1/3)*1.2 #in fm
