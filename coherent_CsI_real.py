@@ -13,7 +13,7 @@ from scipy.optimize import minimize
 def eff(PE):
     a=0.6655
     k=0.4942
-    x0=10.8507-0.3995
+    x0=10.8507
     f=a/(1+np.exp(-k*(PE-x0)))
     if (PE<5):
         ret=0
@@ -70,7 +70,7 @@ def rebin_list_1E2t(lista):
     listfinal[1,2]=t2
     return listfinal
 
-#rebins with 2 E bin (6-18 PE, 19-30 PE), 2 t bins (0-1 mu s, 1-6 mu s)                                                                       
+#rebins with 2 E bin (7-18 PE, 19-30 PE), 2 t bins (0-1 mu s, 1-6 mu s)                                                                       
 def rebin_list_2E2t(lista):
     t1e1=0
     t2e1=0
@@ -103,7 +103,7 @@ def rebin_list_2E2t(lista):
     listfinal[3,2]=t2e2
     return listfinal
 
-#rebins with 4 E bin (6- 18, 19-22,23-26,27-30), 2 t bins (0-1 mu s, 1-6 mu s)                                        
+#rebins with 4 E bin (7- 18, 19-22,23-26,27-30), 2 t bins (0-1 mu s, 1-6 mu s)                                        
 def rebin_list_4E2t(lista):
     t1e1=0
     t2e1=0
@@ -313,7 +313,7 @@ def chi2_144bins(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
 
         chi += add
     return 2*chi+(alpha/0.28)**2+(beta/0.25)**2+(gamma/0.171)**2
-#    return 2*chi+ 2*(alpha - np.log(alpha + 1.))/0.28**2+2*(beta - np.log(beta + 1.))/0.25**2+2*(gamma - np.log(gamma + 1.))/0.171**2
+#    return 2*chi+ 2*(alpha - np.log(alpha + 1.))/0.28**2+2*(beta - np.log(beta + 1.))/0.25**2+2*(gamma - np.log(gamma + 1.))/0.171**2 #new pull term parametrization
 
 #chi2 for 1 bin
 def chi2_1d(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
@@ -330,7 +330,7 @@ def chi2_1d(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
         numobs1d += meas[i, 2]
     chi=numevents1d - numobs1d + numobs1d*np.log(numobs1d/numevents1d)
     return  2*chi+(alpha/0.28)**2+(beta/0.25)**2+(gamma/0.049)**2
-#    return 2*chi+ 2*(alpha - np.log(alpha + 1.))/0.28**2+2*(beta - np.log(beta + 1.))/0.25**2+2*(gamma - np.log(gamma + 1.))/0.049**2
+#    return 2*chi+ 2*(alpha - np.log(alpha + 1.))/0.28**2+2*(beta - np.log(beta + 1.))/0.25**2+2*(gamma - np.log(gamma + 1.))/0.049**2 #new pull term parametrization
 
 #chi2 compuation for 2 timing, 1 energy bin
 def chi2_bins(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
@@ -356,7 +356,7 @@ def chi2_bins(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
 
         chi += add
     return  2*chi+(alpha/0.28)**2+(beta/0.25)**2+(gamma/0.06)**2     
-#    return 2*chi+ 2*(alpha - np.log(alpha + 1.))/0.28**2+2*(beta - np.log(beta + 1.))/0.25**2+2*(gamma - np.log(gamma + 1.))/0.06**2
+#    return 2*chi+ 2*(alpha - np.log(alpha + 1.))/0.28**2+2*(beta - np.log(beta + 1.))/0.25**2+2*(gamma - np.log(gamma + 1.))/0.06**2 #new pull term parametrization
 
 #chi2 for 2 timing, 2 energy bins
 def chi2_2t2ebins(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
@@ -381,7 +381,7 @@ def chi2_2t2ebins(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
 
         chi += add
     return  2*chi+(alpha/0.28)**2+(beta/0.25)**2+(gamma/0.0698)**2                                                                                                  
-#    return 2*chi+ 2*(alpha - np.log(alpha + 1.))/0.28**2+2*(beta - np.log(beta + 1.))/0.25**2+2*(gamma - np.log(gamma + 1.))/0.0698**2
+#    return 2*chi+ 2*(alpha - np.log(alpha + 1.))/0.28**2+2*(beta - np.log(beta + 1.))/0.25**2+2*(gamma - np.log(gamma + 1.))/0.0698**2 #new pull term parametrization
 
 #chi2 for 2 timing, 4 energy bins
 def chi2_2t4ebins(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
@@ -406,4 +406,4 @@ def chi2_2t4ebins(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
 
         chi += add
     return  2*chi+(alpha/0.28)**2+(beta/0.25)**2+(gamma/0.0855)**2
-#    return 2*chi+ 2*(alpha - np.log(alpha + 1.))/0.28**2+2*(beta - np.log(beta + 1.))/0.25**2+2*(gamma - np.log(gamma + 1.))/0.0855**2         
+#    return 2*chi+ 2*(alpha - np.log(alpha + 1.))/0.28**2+2*(beta - np.log(beta + 1.))/0.25**2+2*(gamma - np.log(gamma + 1.))/0.0855**2    #new pull term parametrization      
