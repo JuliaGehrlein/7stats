@@ -28,16 +28,16 @@ There are three code files which contain auxillary functions needed to calculate
 `cevns.py` contains the functions specific to the CEvNS process like the cross section for heavy NSI mediators.
 
 `cevns_accelerators.py` contains the funtions which are specific to CEvNS from SNS neutrinos like the energy structure of the different neutrino flavors coming 
-from the SNS beam, the function used for photoelectron smearing, the CsI detector efficiency and functions needed for the backgrouond treatment.
+from the SNS beam, the function used for photoelectron smearing, the CsI detector efficiency and functions needed for the background treatment.
 
-`coherent_CsI_real.py` contains the functions which calculate the signal at COHERENT Csi, apply the dector efficiency, rebin the data to the desired number of bins. 
+`coherent_CsI_real.py` contains the functions which calculate the signal at COHERENT CsI, apply the dector efficiency, or rebin the data to the desired number of bins. 
 
 `cevns_statistics.py` is only needed if one wishes to use the new pull term parametrization. In this case the chi2 function and the functions for the MC calculation
-need to be changed.
+need to be changed as well.
 
 ### 	Scan code
 The files `scan_nsi_csir_eeonly_2t1e_nomarg_ee.py`, `scan_nsi_csir_eeonly_2t1e_marg_ee.py`, `scan_lmad_2t1e.py`
-demonstrates the calculation of the test statistic using two timing bins, scanning over one NSI parameter (or two in the case of LMA Dark) and marginalizing over the pull terms 
+demonstrate the calculation of the test statistic using two timing bins, scanning over one NSI parameter (or two in the case of LMA Dark) and marginalizing over the pull terms 
 and the remaining NSI parameters (in the case of `scan_nsi_csir_eeonly_2t1e_marg_ee.py`). 
 
 ### Monte Carlo simulation
@@ -48,8 +48,8 @@ simulation which is used to calculate the p value.
 We include in `datafile_out` the output of the MC simulation for several NSI scenarios as well as the output of the scan code for these cases.
 
 ## Results 
-For convience we include the datafiles containing the results of the MC simulation for the p values of various NSI models (only one non-zero NSI parameter, allowing 
-for all NSI parameters to be non-zero simultanously and only non-zero eps_ee^u and eps_mm^u) using two timing bins. These files can be found in the 
+For convience we include the datafiles containing the results of the MC estimation for the p values of various NSI models (only one non-zero NSI parameter, allowing 
+for all NSI parameters to be non-zero simultanously and only non-zero eps_ee^u and eps_mm^u for LMA Dark) using two timing bins. These files can be found in the 
 `datafiles_pval` folder 
 The first column is the value of the NSI parameter, the second column is the p value.
 
