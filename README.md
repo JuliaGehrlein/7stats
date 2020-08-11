@@ -10,7 +10,7 @@
 
 `7stats` is a tool which allows for the p value  calculation of standard and new physics scenarios in the CEvNS process.
 As an explicit example we demonstrate the p value calculation with a Monte Carlo simulation 
-for neutrino non-standard interactions with a heavy mediator using the COHERENT CsI data.
+for neutrino non-standard interactions with a heavy mediator (mass above 100 MeV) using the COHERENT CsI data.
 
 ## Usage
 The code is written in python3, numpy and scipy are needed for the calculations.
