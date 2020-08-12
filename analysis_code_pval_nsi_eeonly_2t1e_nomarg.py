@@ -85,7 +85,11 @@ def chi2_bins(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
         preddev=csir.rebin_list_1E2t(lista)
         
         for i in range(len(preddev)):
-                numevents = preddev[i, 2]
+                if preddev[i,2]>=0:
+                        numevents = preddev[i, 2]
+                else:
+                        numevents=10000 #in case the minimizer leads to a negative number of events   
+                
                 numobs = meas[i, 2]
                 if numobs == 0:
                         add = numevents - numobs
@@ -111,6 +115,7 @@ for i in range(nn):
         pp,outt=randomdata(random)
         if pp<10:
                 res=mini_bins(epsee,n,outt,bkg1dsdata)
+                print(res)
                 fileout[i,0]=res.fun              
                 np.savetxt("datafiles_out/result_pval_nsi_eeonly_2t1e_nomarg_nosmear_gauss006.txt",fileout)
 

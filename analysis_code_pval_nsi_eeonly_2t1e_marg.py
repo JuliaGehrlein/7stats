@@ -86,7 +86,10 @@ def chi2_bins(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
         preddev=csir.rebin_list_1E2t(lista)
         
         for i in range(len(preddev)):
-                numevents = preddev[i, 2]
+                if preddev[i,2]>=0:
+                        numevents = preddev[i, 2]
+                else:
+                        numevents=10000 #in case the minimizer leads to a negative number of events     
                 numobs = meas[i, 2]
                 if numobs == 0:
                         add = numevents - numobs
