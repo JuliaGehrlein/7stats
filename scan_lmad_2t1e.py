@@ -58,7 +58,6 @@ def mini_2t1e(epseu,epsmu,n,meas,bkgdata):
 
 results=np.zeros((len(np.arange(-1,1.05,0.05))*len(np.arange(-1,1.25,0.05)),6))                       
 kk=0  
-print(mini_2t1e(0,0,n,dat,bkg1dsdata))
 for epseu in np.arange(-1,1.05,0.05):
    for epsmu in np.arange(1,1.25,0.05):
       res=mini_2t1e(epseu,epsmu,n,dat,bkg1dsdata)
