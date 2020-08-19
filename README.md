@@ -2,7 +2,10 @@
 	title="7stats logo" width="350" height="250" />
   
 # 7stats 
-| arXiv | Zenodo DOI |
+ 
+| arXiv |
+|:-----:|
+|[![arXiv](https://img.shields.io/badge/arXiv-2008.06062-orange.svg)](https://arXiv.org/abs/2008.06062)|
 
 
 
@@ -57,5 +60,5 @@ The first column is the value of the NSI parameter, the second column is the p v
 If any bugs are identified or any features suggested, please use the tools (issues, pull requests, etc.) on github.
 
 ## Reference
-If you use this code please reference ...
+If you use this code please reference **[arXiv:2008.06062](https://arxiv.org/pdf/2008.06062.pdf)**
 
