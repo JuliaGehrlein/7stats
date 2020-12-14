@@ -35,13 +35,11 @@ from the SNS beam, the function used for photoelectron smearing, the CsI detecto
 
 `coherent_CsI_real.py` contains the functions which calculate the signal at COHERENT CsI, apply the dector efficiency, or rebin the data to the desired number of bins. 
 
-`cevns_statistics.py` is only needed if one wishes to use the new pull term parametrization. In this case the chi2 function and the functions for the MC calculation
-need to be changed as well.
+
 
 ### 	Scan code
-The files `scan_nsi_csir_eeonly_2t1e_nomarg_ee.py`, `scan_nsi_csir_eeonly_2t1e_marg_ee.py`, `scan_lmad_2t1e.py`
-demonstrate the calculation of the test statistic using two timing bins, scanning over one NSI parameter (or two in the case of LMA Dark) and marginalizing over the pull terms 
-and the remaining NSI parameters (in the case of `scan_nsi_csir_eeonly_2t1e_marg_ee.py`). 
+The file `FC_analysis_nsi_eeonly_12t12e_nomarg_newpull.py`
+demonstrates the calculation of the test statistic using 144 bins, asymmetric pull terms to obtain a PDF of TS. The example is for only non-zero eps_ee^V, however it can be trivially applied to other cases as well.
 
 ### Monte Carlo simulation
 The files `analysis_code_pval_nsi_eeonly_2t1e_nomarg.py`, `analysis_code_pval_nsi_eeonly_2t1e_marg.py`, `analysis_code_pval_nsi_lmad_2t1e.py` demonstrate the Monte Carlo
