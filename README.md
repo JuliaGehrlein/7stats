@@ -40,10 +40,10 @@ from the SNS beam, the function used for photoelectron smearing, the CsI detecto
 The file `FC_analysis_nsi_eeonly_12t12e_nomarg_newpull.py`
 demonstrates the calculation of the test statistic using 144 bins, asymmetric pull terms to obtain a PDF of TS. The example is for only non-zero eps_ee^V, however it can be trivially applied to other cases as well.
 
-The file `hh` demonstrates the Monte Carlo
-simulation which is used to calculate the p value. 
+The file `analysis_code_pval_sm_12t12e.py` demonstrates the Monte Carlo
+simulation which is used to calculate the p value of the SM using 144 bins. The change to a different bin configuration is trivial. 
 
-`analysis_code_pval.py` contains the function to calculate the p value. It uses the output data file from the scan code as well as the one from the MC simulation. 
+
 
 
 ## Results 
