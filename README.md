@@ -11,8 +11,8 @@
 
 ## Introduction
 
-`7stats` is a tool which allows for the p value  calculation of standard and new physics scenarios in the CEvNS process.
-As an explicit example we demonstrate the p value calculation with a Monte Carlo simulation 
+`7stats` is a tool which allows for the calculation of the p value and confidence levels using a Feldmann-Cousins approach for standard and new physics scenarios in the CEvNS process.
+As an explicit example we demonstrate the p value calculation with a Monte Carlo simulation for the SM, and the calculation of confidence levels with the FC approach 
 for neutrino non-standard interactions with a heavy mediator (mass above 100 MeV) using the COHERENT CsI data.
 
 ## Usage
