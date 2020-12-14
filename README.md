@@ -37,21 +37,20 @@ from the SNS beam, the function used for photoelectron smearing, the CsI detecto
 
 
 
-### 	Scan code
+### 	MC simulation
 The file `FC_analysis_nsi_eeonly_12t12e_nomarg_newpull.py`
 demonstrates the calculation of the test statistic using 144 bins, asymmetric pull terms to obtain a PDF of TS. The example is for only non-zero eps_ee^V, however it can be trivially applied to other cases as well.
 
-### Monte Carlo simulation
-The files `analysis_code_pval_nsi_eeonly_2t1e_nomarg.py`, `analysis_code_pval_nsi_eeonly_2t1e_marg.py`, `analysis_code_pval_nsi_lmad_2t1e.py` demonstrate the Monte Carlo
+The file `hh` demonstrates the Monte Carlo
 simulation which is used to calculate the p value. 
 
 `analysis_code_pval.py` contains the function to calculate the p value. It uses the output data file from the scan code as well as the one from the MC simulation. 
-We include in `datafile_out` the output of the MC simulation for several NSI scenarios as well as the output of the scan code for these cases.
+
 
 ## Results 
-For convience we include the datafiles containing the results of the MC estimation for the p values of various NSI models (only one non-zero NSI parameter, allowing 
-for all NSI parameters to be non-zero simultanously and only non-zero eps_ee^u and eps_mm^u for LMA Dark) using two timing bins. These files can be found in the 
-`datafiles_pval` folder 
+For convience we include the datafiles containing the results of the MC estimation for the confidence levels using a FC approach of various NSI models (only one non-zero NSI parameter, allowing 
+for all NSI parameters to be non-zero simultanously) using 144 bins. These files can be found in the 
+`datafiles_out` folder 
 The first column is the value of the NSI parameter, the second column is the p value.
 
 ## Bugs and Features
