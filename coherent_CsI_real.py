@@ -163,95 +163,12 @@ def rebin_list_4E2t(lista):
     return listfinal
 
 
-#out
-def chi2final(sig,n,ac,meas,alpha,beta,gamma):
-    chi=0
-    #add signal and neutron bkg
-    #alpha includes the uncertainty on the neutrino flux and the QF, accpetance, form factor, total of 28%, beta  is 25%
-    sig_n=add_lists_2(sig,n,alpha,beta)
-    smeared=acc.smearing_fct(sig_n)
-    pred=acc.data_eff(smeared)
-#    pred=acc.data_eff(sig_n)
-    #add bkg
-    #uncertainty on background is sqrt(average number of events in bin)=42%
-    lista=add_lists_1(pred,ac,gamma)
-    for i in range(len(pred)):
-        numevents = lista[i, 2]
-        numobs = meas[i, 2]
-        if numobs == 0:
-            add = numevents - numobs
-        else:
-            add = numevents - numobs + numobs*np.log(numobs/numevents)
-
-        chi += add
-    return 2*chi+ 2*(alpha - np.log(alpha + 1.))/0.28**2+2*(beta - np.log(beta + 1.))/0.25**2+2*(gamma - np.log(gamma + 1.))/0.171**2 
-
-def mini_final(sig,n,meas,bkgdata):
-    minres= minimize(lambda x: chi2final( sig,n,bkgdata,meas,x[0],x[1],x[2]),(0.0,0.0,0.0),method='SLSQP',tol=1e-5)
-    return minres
-
-
-def signalcomp_lmad(epseu,epsmu):
-    #setting up COHERENT                                                                                                                                                                                  
-    pot= 0.08*(1.76e23/308.1)/(24.0*60.0*60.0)
-    R=1930.0 #in cm                                                                                                                                                                                       
-    A_Cs=133
-    Z_Cs=55
-    bindE_Cs=1118.532104
-    Q=0.0878
-    Y=13.348
-    A_I=127
-    Z_I=53
-    bindE_I=1072.580322
-
-    mass=14.6
-    time=308.1
-
-    f_Cs=(A_Cs)/(A_Cs+A_I)
-    f_I=(A_I)/(A_Cs+A_I)
-
-    numbins=33
-    PE_bins =np.linspace(4, 37,34 )
-    bins_I_ed = np.zeros(numbins)
-    bins_Cs_ed = np.zeros(numbins)
-    bins_result_ed=np.zeros((numbins,2))
-
-    bins_I_md = np.zeros(numbins)
-    bins_Cs_md = np.zeros(numbins)
-    bins_result_md=np.zeros((numbins,2))
-
-    bins_I_mp = np.zeros(numbins)
-    bins_Cs_mp = np.zeros(numbins)
-    bins_result_mp=np.zeros((numbins,2))
-
-    epsuee=epseu
-    epsdee=0.0
-    epsuem=0.0
-    epsdem=0.0
-    epsdet=0.0
-    epsuet=0.0
-    epsumm=epsmu
-    epsdmm=0.0
-    epsumt=0.0
-    epsdmt=0.0
-    k=0
-    for i in range(len(PE_bins)-1):
-        bins_Cs_ed[i] = f_Cs*cevns.ratee( A_Cs,Z_Cs,"accelerator",bindE_Cs,R,pot,Q,Y,PE_bins[i],PE_bins[i+1],mass,time,epsuee,epsdee,epsuem,epsdem,epsuet,epsdet )
-        bins_I_ed[i] = f_I*cevns.ratee( A_I,Z_I,"accelerator",bindE_I,R,pot,Q,Y,PE_bins[i],PE_bins[i+1],mass,time,epsuee,epsdee,epsuem,epsdem,epsuet,epsdet )
-        bins_result_ed[k,1] = bins_I_ed[i] + bins_Cs_ed[i]
-        bins_result_ed[k,0]=PE_bins[i]
-        bins_Cs_md[i] = f_Cs*cevns.ratemd( A_Cs,Z_Cs,"accelerator",bindE_Cs,R,pot,Q,Y,PE_bins[i],PE_bins[i+1],mass,time,epsumm,epsdmm,epsuem,epsdem,epsumt,epsdmt)
-        bins_I_md[i] = f_I*cevns.ratemd( A_I,Z_I,"accelerator",bindE_I,R,pot,Q,Y,PE_bins[i],PE_bins[i+1],mass,time,epsumm,epsdmm,epsuem,epsdem,epsumt,epsdmt)
-        bins_result_md[k,1] = bins_I_md[i] + bins_Cs_md[i]
-        bins_result_md[k,0]=PE_bins[i]
-    return z
-
 #signal computation for vector NSI with heavy mediator
 def signalcomp(epsee,epsmm,epsem,epset,epsmt):
     #setting up COHERENT   
-    pot= 0.08*(1.76e23/308.1)/(24.0*60.0*60.0)
-    R=1930.0 #in cm   
-    A_Cs=133
+    pot= 0.08*(1.76e23/308.1)/(24.0*60.0*60.0)#proton on target
+    R=1930.0 #distance to detector in cm   
+    A_Cs=133 #atomic numbers and binding energies of Cs, I
     Z_Cs=55
     bindE_Cs=1118.532104
     Q=0.0878
@@ -260,8 +177,8 @@ def signalcomp(epsee,epsmm,epsem,epset,epsmt):
     Z_I=53
     bindE_I=1072.580322
 
-    mass=14.6
-    time=308.1
+    mass=14.6 #detector mass in kg
+    time=308.1 #running time in days
 
     f_Cs=(A_Cs)/(A_Cs+A_I)
     f_I=(A_I)/(A_Cs+A_I)
@@ -309,71 +226,16 @@ def signalcomp(epsee,epsmm,epsem,epset,epsmt):
     sig=acc.timing_energy_2D(bins_result_ed,bins_result_md,bins_result_mp)
     return sig
 
-#out
-def chi2final_marg(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
-    chi=0
-    #add signal and neutron bkg                                                                                                                                    
-    #alpha includes the uncertainty on the neutrino flux and the QF, accpetance, form factor, total of 28%, beta  is 25%                                          
-    sig=signalcomp(epsee,epsmm,epsem,epset,epsmt)
-    sig_n=add_lists_2(sig,n,alpha,beta)
-    smeared=acc.smearing_fct(sig_n)
-    pred=acc.data_eff(smeared)
-#    pred=acc.data_eff(sig_n)                                                                                                                                       
-    #add bkg                                                                                                                                                        
-    #uncertainty on background is sqrt(average number of events in bin)=42%                                                                                         
-    lista=add_lists_1(pred,ac,gamma)
-    for i in range(len(pred)):
-        numevents = lista[i, 2]
-        numobs = meas[i, 2]
-        if numobs == 0:
-            add = numevents - numobs
-        else:
-            add = numevents - numobs + numobs*np.log(numobs/numevents)
 
-        chi += add
-    return 2*chi+(alpha/0.28)**2+(beta/0.25)**2+(gamma/0.171)**2
-
-def mini_final_marg(epsee,n,meas,bkgdata):
-    minres= minimize(lambda x: chi2final_marg( n,bkgdata,meas,epsee,x[0],x[1],x[2],x[3],x[4],x[5],x[6]),(0.0,0.0,0.0,0.0,0.0,0.0,0.0),method='SLSQP',tol=1e-5,options={"maxiter":1e3})
-    return minres
-#computation of TS using 144 bins out
-def chi2_144bins(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
-    chi=0
-    #add signal and neutron bkg                                                                                                                                                      
-    sig=signalcomp(epsee,epsmm,epsem,epset,epsmt)
-    sig_n=add_lists_2(sig,n,alpha,beta)
-    smeared=acc.smearing_fct(sig_n)
-    pred=acc.data_eff(smeared)    
-    #add bkg                                                                                                                                                                        
-    lista=add_lists_1(pred,ac,gamma)
-    for i in range(len(pred)):
-        if lista[i,2]>=0:
-            numevents = lista[i, 2]
-        else:
-            numevents=10000 #in case the minimizer leads to a negative number of events
-        
-        numobs = meas[i, 2]
-        if numobs == 0:
-            add = numevents - numobs
-        else:
-            add = numevents - numobs + numobs*np.log(numobs/numevents)
-
-        chi += add
-    return 2*chi+(alpha/0.28)**2+(beta/0.25)**2+(gamma/0.171)**2
-    return 2*chi+ 2*(alpha - np.log(alpha + 1.))/0.28**2+2*(beta - np.log(beta + 1.))/0.25**2+2*(gamma - np.log(gamma + 1.))/0.171**2
 #computation of TS using 144 bins and asymmetric pull terms 
 def chi2_144bins_newpull(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
     chi=0
-    #add signal and neutron bkg                                                                                                                                                    
-        
-    #alpha includes the uncertainty on the neutrino flux and the QF, accpetance, form factor, total of 28%, beta  is 25%                                                            
+    #add signal and neutron bkg                                                                                                                                                                                                       
     sig=signalcomp(epsee,epsmm,epsem,epset,epsmt)
     sig_n=add_lists_2(sig,n,alpha,beta)
-    smeared=acc.smearing_fct(sig_n)
-   # pred=acc.data_eff(sig_n)                                                                                                                                                        
+    smeared=acc.smearing_fct(sig_n)                                                                                                                                                   
     pred=acc.data_eff(smeared)
-    #add bkg                                                                                                                                                                        
-    #uncertainty on background is sqrt(average number of events in bin)=42%                                                                                                                                                                                                                                                                                             
+    #add bkg                                                                                                                                                                                                                                                                                                                                                                                                                                                           
     lista=add_lists_1(pred,ac,gamma)
     for i in range(len(pred)):
         if lista[i,2]>=0:
@@ -388,81 +250,16 @@ def chi2_144bins_newpull(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamm
             add = numevents - numobs + numobs*np.log(numobs/numevents)
 
         chi += add
-    if (alpha + 1.)<=0 or (beta + 1.)<=0 or (gamma + 1.)<=0:
+    if (alpha + 1.)<=0 or (beta + 1.)<=0 or (gamma + 1.)<=0: #avoid log(0)
         return np.abs(alpha*1000.0)+np.abs(beta*1000.0)+np.abs(gamma*1000.0)+2*chi
     else:
         return 2*chi+ 2*(alpha - np.log(alpha + 1.))/0.28**2+2*(beta - np.log(beta + 1.))/0.25**2+2*(gamma - np.log(gamma + 1.))/0.171**2 
 
-
-def chi2_1d(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
-    chi=0
-    numevents1d=0 
-    numobs1d=0
-    sig=signalcomp(epsee,epsmm,epsem,epset,epsmt)
-    sig_n=add_lists_2(sig,n,alpha,beta)
-    #smeared=acc.smearing_fct(sig_n)
-    pred=acc.data_eff(sig_n)  
-    
-
-    #add bkg                                                                                                                                                                                      
-    lista=add_lists_1(pred,ac,gamma)
-    for i in range(len(lista)):
-        numevents1d +=lista[i, 2]
-        numobs1d += meas[i, 2]
-#    print(numobs1d,"o")
-#   print(numevents1d,"pr")
-    chi=numevents1d - numobs1d + numobs1d*np.log(numobs1d/numevents1d)
-    return  2*chi+(alpha/0.28)**2+(beta/0.25)**2+(gamma/0.049)**2
-#    return 2*chi+ 2*(alpha - np.log(alpha + 1.))/0.28**2+2*(beta - np.log(beta + 1.))/0.25**2+2*(gamma - np.log(gamma + 1.))/0.049**2
-
-def mini_1d(epsee,n,meas,bkgdata):
-    minres= minimize(lambda x: chi2_1d( n,bkgdata,meas,epsee,x[0],x[1],x[2],x[3],x[4],x[5],x[6]),(0.0,0.0,0.0,0.0,0.0,0.0,0.0),method='SLSQP',tol=1e-5,options={"maxiter":1e3})
-    return minres
-
-def chi2_bins(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
-    chi=0
-    sig=signalcomp(epsee,epsmm,epsem,epset,epsmt)
-    sig_n=add_lists_2(sig,n,alpha,beta)
-#    pred=acc.data_eff(sig_n)
-#    smeared=acc.smearing_fct(sig_n)
-    pred=acc.data_eff(sig_n)
-
-    #add bkg                                                                                                                                                                                            
-    lista=add_lists_1(pred,ac,gamma)
-    obss=switch_te(meas)
-    
-    #rebin
-    preddev=rebin_list_1E2t(lista)
-    obssev=rebin_list_1E2t(obss)
-
-    for i in range(len(preddev)):
-        if preddev[i,2]>=0:
-            numevents = preddev[i, 2]
-        else:
-            numevents=10000 #in case the minimizer leads to a negative number of events
-        numobs = obssev[i, 2]
-#        print("obs", numobs)
- #       print("ored",numevents)
-        if numobs == 0:
-            add = numevents - numobs
-        else:
-            add = numevents - numobs + numobs*np.log(numobs/numevents)
-
-        chi += add
-    return  2*chi+(alpha/0.28)**2+(beta/0.25)**2+(gamma/0.06)**2     
-#    return 2*chi+ 2*(alpha - np.log(alpha + 1.))/0.28**2+2*(beta - np.log(beta + 1.))/0.25**2+2*(gamma - np.log(gamma + 1.))/0.06**2
-
-def mini_bins(epsee,n,meas,bkgdata):
-    minres= minimize(lambda x: chi2_bins( n,bkgdata,meas,epsee,x[0],x[1],x[2],x[3],x[4],x[5],x[6]),(0.0,0.0,0.0,0.0,0.0,0.0,0.0),method='SLSQP',tol=1e-5,options={"maxiter":1e3})
-    return minres
-
-
+#computation of TS using 2 bins
 def chi2_bins_newpull(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
     chi=0
     sig=signalcomp(epsee,epsmm,epsem,epset,epsmt)
-    sig_n=add_lists_2(sig,n,alpha,beta)
-#    pred=acc.data_eff(sig_n)                                                                                                                                                       
-#    smeared=acc.smearing_fct(sig_n)                                                                                                                                                
+    sig_n=add_lists_2(sig,n,alpha,beta)                                                                                                                                               
     pred=acc.data_eff(sig_n)
     #add bkg                                                                                                                                                                                                                                                                                                                                                           
     lista=add_lists_1(pred,ac,gamma)
@@ -476,9 +273,7 @@ def chi2_bins_newpull(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
             numevents = preddev[i, 2]
         else:
             numevents=10000 #in case the minimizer leads to a negative number of events                                                                                              
-        numobs = obssev[i, 2]
-#        print("obs", numobs)                                                                                                                                                        
- #       print("ored",numevents)                                                                                                                                                     
+        numobs = obssev[i, 2]                                                                                                                                                 
         if numobs == 0:
             add = numevents - numobs
         else:
@@ -490,72 +285,7 @@ def chi2_bins_newpull(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
     else:
         return 2*chi+ 2*(alpha - np.log(alpha + 1.))/0.28**2+2*(beta - np.log(beta + 1.))/0.25**2+2*(gamma - np.log(gamma + 1.))/0.06**2   
 
-
-def chi2_2t2ebins(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
-    chi=0
-    sig=signalcomp(epsee,epsmm,epsem,epset,epsmt)
-    sig_n=add_lists_2(sig,n,alpha,beta)
-    smeared=acc.smearing_fct(sig_n)
-    pred=acc.data_eff(smeared)
-    #add bkg                                                                                                                                                                                            
-    lista=add_lists_1(pred,ac,gamma)
-    obss=switch_te(meas)
-
-    #rebin                                                                                                                                                                                               
-    preddev=rebin_list_2E2t(lista)
-    obssev=rebin_list_2E2t(obss)
-#    print(obssev,"ob")
- #   print(preddev,"p")
-    for i in range(len(preddev)):
-        numevents = preddev[i, 2]
-        numobs = obssev[i, 2]
-        if numobs == 0:
-            add = numevents - numobs
-        else:
-            add = numevents - numobs + numobs*np.log(numobs/numevents)
-
-        chi += add
-    return  2*chi+(alpha/0.28)**2+(beta/0.25)**2+(gamma/0.0698)**2                                                                                                                                  
-#    return 2*chi+ 2*(alpha - np.log(alpha + 1.))/0.28**2+2*(beta - np.log(beta + 1.))/0.25**2+2*(gamma - np.log(gamma + 1.))/0.0698**2
-
-def mini_2t2ebins(epsee,n,meas,bkgdata):
-    minres= minimize(lambda x: chi2_2t2ebins( n,bkgdata,meas,epsee,x[0],x[1],x[2],x[3],x[4],x[5],x[6]),(0.0,0.0,0.0,0.0,0.0,0.0,0.0),method='SLSQP',tol=1e-5,options={"maxiter":1e3})
-    return minres
-
-def chi2_2t4ebins(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
-    chi=0
-    sig=signalcomp(epsee,epsmm,epsem,epset,epsmt)
-    sig_n=add_lists_2(sig,n,alpha,beta)
-    smeared=acc.smearing_fct(sig_n)
-    pred=acc.data_eff(smeared)
-    #add bkg                                                                                                                                                                                            
-    lista=add_lists_1(pred,ac,gamma)
-    obss=switch_te(meas)
-
-    #rebin                                                                                                                                                                                              
-    preddev=rebin_list_4E2t(lista)
-    obssev=rebin_list_4E2t(obss)
-#    print(obssev,"ob")                                                                                                                                                                                  
- #   print(preddev,"p")                                                                                                                                                                                  
-    for i in range(len(preddev)):
-        if preddev[i,2]>=0:
-            numevents = preddev[i, 2]
-        else:
-            numevents=10000 #in case the minimizer leads to a negative number of events   
-        numobs = obssev[i, 2]
-        if numobs == 0:
-            add = numevents - numobs
-        else:
-            add = numevents - numobs + numobs*np.log(numobs/numevents)
-
-        chi += add
-    return  2*chi+(alpha/0.28)**2+(beta/0.25)**2+(gamma/0.0855)**2
-#    return 2*chi+ 2*(alpha - np.log(alpha + 1.))/0.28**2+2*(beta - np.log(beta + 1.))/0.25**2+2*(gamma - np.log(gamma + 1.))/0.0855**2         
-
-def mini_2t4ebins(epsee,n,meas,bkgdata):
-    minres= minimize(lambda x: chi2_2t4ebins( n,bkgdata,meas,epsee,x[0],x[1],x[2],x[3],x[4],x[5],x[6]),(0.0,0.0,0.0,0.0,0.0,0.0,0.0),method='SLSQP',tol=1e-5,options={"maxiter":1e3})
-    return minres
-
+#TS for 8 bins
 def chi2_2t4ebins_newpull(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gamma):
     chi=0
     sig=signalcomp(epsee,epsmm,epsem,epset,epsmt)
@@ -569,8 +299,7 @@ def chi2_2t4ebins_newpull(n,ac,meas,epsee,epsmm,epsem,epset,epsmt,alpha,beta,gam
     #rebin                                                                                                                                                                          
     preddev=rebin_list_4E2t(lista)
     obssev=rebin_list_4E2t(obss)
-#    print(obssev,"ob")                                                                                                                                                             
- #   print(preddev,"p")                                                                                                                                                             
+                                                                                                                                                            
     for i in range(len(preddev)):
         if preddev[i,2]>=0:
             numevents = preddev[i, 2]
