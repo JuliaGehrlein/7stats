@@ -5,7 +5,6 @@ from scipy.integrate import quad
 import cevns
 import cevns_accelerators as acc
 import coherent_CsI_real as csir
-import cevns_statistics as stat
 from scipy.interpolate import interp1d
 from scipy.optimize import minimize
 #setting up COHERENT                                                                                                                                                
